@@ -9,22 +9,23 @@ jobs:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+          
       - name: Set up JDK
         uses: actions/setup-java@v3.12.0
         with:
           java-version: '11'
           distribution: 'zulu' # Alternative distribution options are available
+          
       - name: Compilar
         run: |
           chmod +x gradlew
           ./gradlew build bootBuildImage
+          
       - name: Verificar compilado
         run: |
             ls -lt 
             ls -lt $GITHUB_WORKSPACE/build
-      - name: Find Docker Paths
-        uses: sleepypikachu/actions-find-docker-paths@v1.0.0
-    
+            
       - name: Verificar compilado
         run: docker images 
         
@@ -34,26 +35,40 @@ jobs:
           path: ~/.sonar/cache
           key: ${{ runner.os }}-sonar
           restore-keys: ${{ runner.os }}-sonar
+          
       - name: Cache Gradle packages
         uses: actions/cache@v3
         with:
           path: ~/.gradle/caches
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
           restore-keys: ${{ runner.os }}-gradle
+          
       - name: Compilar y Analizar con Sonar
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
-          chmod +x gradlew
-          ./gradlew build sonar --info
+          #chmod +x gradlew
+          #./gradlew build sonar --info
+          
       - name: Docker Login
         uses: docker/login-action@v2.2.0
         with: 
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-      - name: Docker Build
-        run: |
-          #docker build --tag chfuentesu/finaldevops:latest $GITHUB_WORKSPACE/deploy
-          #docker images
+      
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
+        with:
+          images: chfuentesu/finaldevops
+      
+      - name: Build and push Docker image
+        uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
       
