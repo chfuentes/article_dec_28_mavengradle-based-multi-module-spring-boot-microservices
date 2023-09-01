@@ -18,12 +18,11 @@ jobs:
       - name: Compilar
         run: |
           chmod +x gradlew
-          ./gradlew build
+          ./gradlew build bootBuildImage
       - name: Verificar compilado
         run: |
             ls -lt 
             ls -lt $GITHUB_WORKSPACE/build
-            ls -lt $GITHUB_WORKSPACE/build/libs
             
       - name: Cache SonarCloud packages
         uses: actions/cache@v3
