@@ -35,7 +35,10 @@ jobs:
           chmod +x gradlew
           ./gradlew build sonar --info
       - name: Verificar compilado
-        run: ls -lt 
+        run: |
+            ls -lt 
+            ls -lt $GITHUB_WORKSPACE/build
+            ls -lt $GITHUB_WORKSPACE/build/libs
       - name: Docker Login
         uses: docker/login-action@v2.2.0
         with: 
@@ -43,6 +46,6 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
       - name: Docker Build
         run: |
-          docker build --tag chfuentesu/finaldevops:latest $GITHUB_WORKSPACE/deploy
-          docker images
+          #docker build --tag chfuentesu/finaldevops:latest $GITHUB_WORKSPACE/deploy
+          #docker images
       
