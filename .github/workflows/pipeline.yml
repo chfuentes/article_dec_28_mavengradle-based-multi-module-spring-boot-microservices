@@ -21,5 +21,50 @@ jobs:
           chmod +x gradlew
           ./gradlew build bootBuildImage
           
-
+      - name: Verificar compilado
+        run: |
+            ls -lt 
+            ls -lt $GITHUB_WORKSPACE/build
+            ls -lt $GITHUB_WORKSPACE/service-a/build/libs
+            ls -lt $GITHUB_WORKSPACE/service-b/build/libs
+            ls -lt $GITHUB_WORKSPACE/service-c/build/libs
+            
+      - name: Verificar compilado
+        run: docker images 
+        
+      - name: Cache SonarCloud packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.sonar/cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
+          
+      - name: Cache Gradle packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
+          restore-keys: ${{ runner.os }}-gradle
+          
+      - name: Compilar y Analizar con Sonar
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: |
+          chmod +x gradlew
+          ./gradlew build sonar --info
+          
+      - name: Docker Login
+        uses: docker/login-action@v2.2.0
+        with: 
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
       
+      - name: Send docker images
+        run: |
+          docker tag 7d820823f33c chfuentesu/spring-multi-module-service-service-a
+          docker tag c46339799598 chfuentesu/spring-multi-module-service-service-b
+          docker tag 61e555bbcb7b chfuentesu/spring-multi-module-service-service-c
+          docker push chfuentesu/spring-multi-module-service-service-a
+          docker push chfuentesu/spring-multi-module-service-service-b
+          docker push chfuentesu/spring-multi-module-service-service-c      
