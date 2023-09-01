@@ -1,7 +1,6 @@
 name: MiPipeline
 on:
   push:
-
 jobs:
   build:
     name: Build and analyze
@@ -23,8 +22,12 @@ jobs:
         run: |
             ls -lt 
             ls -lt $GITHUB_WORKSPACE/build
+      - name: Find Docker Paths
+        uses: sleepypikachu/actions-find-docker-paths@v1.0.0
+    
       - name: Verificar compilado
-        run: docker images | grep spring-multi-module
+        run: docker images 
+        
       - name: Cache SonarCloud packages
         uses: actions/cache@v3
         with:
