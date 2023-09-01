@@ -25,9 +25,9 @@ jobs:
         run: |
             ls -lt 
             ls -lt $GITHUB_WORKSPACE/build
-            ls -lt $GITHUB_WORKSPACE/service-a/build
-            ls -lt $GITHUB_WORKSPACE/service-b/build
-            ls -lt $GITHUB_WORKSPACE/service-c/build
+            ls -lt $GITHUB_WORKSPACE/service-a/build/libs
+            ls -lt $GITHUB_WORKSPACE/service-b/build/libs
+            ls -lt $GITHUB_WORKSPACE/service-c/build/libs
             
       - name: Verificar compilado
         run: docker images 
@@ -63,5 +63,9 @@ jobs:
       - name: Send docker images
         run: |
           docker tag 7d820823f33c chfuentesu/spring-multi-module-service-service-a
+          docker tag c46339799598 chfuentesu/spring-multi-module-service-service-b
+          docker tag 61e555bbcb7b chfuentesu/spring-multi-module-service-service-c
           docker push chfuentesu/spring-multi-module-service-service-a
+          docker push chfuentesu/spring-multi-module-service-service-b
+          docker push chfuentesu/spring-multi-module-service-service-c
       
