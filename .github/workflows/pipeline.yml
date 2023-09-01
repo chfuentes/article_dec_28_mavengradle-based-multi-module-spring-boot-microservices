@@ -74,6 +74,8 @@ jobs:
           java -jar $GITHUB_WORKSPACE/service-b/build/libs/service-b-0.0.1-SNAPSHOT.jar &
           java -jar $GITHUB_WORKSPACE/service-c/build/libs/service-c-0.0.1-SNAPSHOT.jar &
 
+          sleep 20
+          
           curl http://localhost:8081/greeting
           curl http://localhost:8082/greeting
           curl http://localhost:8083/greeting
