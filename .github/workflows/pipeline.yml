@@ -51,8 +51,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
-          #chmod +x gradlew
-          #./gradlew build sonar --info
+          chmod +x gradlew
+          ./gradlew build sonar --info
           
       - name: Docker Login
         uses: docker/login-action@v2.2.0
@@ -67,16 +67,4 @@ jobs:
           docker tag 61e555bbcb7b chfuentesu/spring-multi-module-service-service-c
           docker push chfuentesu/spring-multi-module-service-service-a
           docker push chfuentesu/spring-multi-module-service-service-b
-          docker push chfuentesu/spring-multi-module-service-service-c
-      - name: Prueba CURL
-        run: |
-          java -jar $GITHUB_WORKSPACE/service-a/build/libs/service-a-0.0.1-SNAPSHOT.jar &
-          java -jar $GITHUB_WORKSPACE/service-b/build/libs/service-b-0.0.1-SNAPSHOT.jar &
-          java -jar $GITHUB_WORKSPACE/service-c/build/libs/service-c-0.0.1-SNAPSHOT.jar &
-
-          sleep 20
-          
-          curl http://localhost:8081/greeting
-          curl http://localhost:8082/greeting
-          curl http://localhost:8083/greeting
-      
+          docker push chfuentesu/spring-multi-module-service-service-c      
