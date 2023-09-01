@@ -25,6 +25,9 @@ jobs:
         run: |
             ls -lt 
             ls -lt $GITHUB_WORKSPACE/build
+            ls -lt $GITHUB_WORKSPACE/build
+            ls -lt $GITHUB_WORKSPACE/build
+            ls -lt $GITHUB_WORKSPACE/service-a
             
       - name: Verificar compilado
         run: docker images 
@@ -59,6 +62,6 @@ jobs:
       
       - name: Send docker images
         run: |
-          docker tag ffc5ec760103 $${{ secrets.DOCKER_USERNAME }}$/springboot-servicea
-          docker push $${{ secrets.DOCKER_USERNAME }}$/springboot-servicea
+          docker tag ffc5ec760103 chfuentesu/spring-multi-module-service-service-a
+          docker push chfuentesu/spring-multi-module-service-service-a
       
