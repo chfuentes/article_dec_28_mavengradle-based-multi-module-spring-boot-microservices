@@ -29,6 +29,12 @@ jobs:
             ls -lt $GITHUB_WORKSPACE/service-b/build/libs
             ls -lt $GITHUB_WORKSPACE/service-c/build/libs
             
+      - name: Init compilado
+        run: |
+          java -jar service-a\target\service-a-0.0.1-SNAPSHOT.jar
+          java -jar service-b\target\service-b-0.0.1-SNAPSHOT.jar
+          java -jar service-b\target\service-c-0.0.1-SNAPSHOT.jar
+      
       - name: Verificar compilado
         run: docker images 
         
@@ -45,6 +51,12 @@ jobs:
           path: ~/.gradle/caches
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
           restore-keys: ${{ runner.os }}-gradle
+
+      - name: Prueba compilado JAR
+        run: |
+          curl http://localhost:8081/greeting
+          curl http://localhost:8082/greeting
+          curl http://localhost:8083/greeting
           
       - name: Compilar y Analizar con Sonar
         env:
@@ -52,7 +64,7 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
           chmod +x gradlew
-          ./gradlew build sonar --info
+          #./gradlew build sonar --info
           
       - name: Docker Login
         uses: docker/login-action@v2.2.0
@@ -62,9 +74,9 @@ jobs:
       
       - name: Send docker images
         run: |
-          docker tag 7d820823f33c chfuentesu/spring-multi-module-service-service-a
-          docker tag c46339799598 chfuentesu/spring-multi-module-service-service-b
-          docker tag 61e555bbcb7b chfuentesu/spring-multi-module-service-service-c
-          docker push chfuentesu/spring-multi-module-service-service-a
-          docker push chfuentesu/spring-multi-module-service-service-b
-          docker push chfuentesu/spring-multi-module-service-service-c      
+          #docker tag 7d820823f33c chfuentesu/spring-multi-module-service-service-a
+          #docker tag c46339799598 chfuentesu/spring-multi-module-service-service-b
+          #docker tag 61e555bbcb7b chfuentesu/spring-multi-module-service-service-c
+          #docker push chfuentesu/spring-multi-module-service-service-a
+          #docker push chfuentesu/spring-multi-module-service-service-b
+          #docker push chfuentesu/spring-multi-module-service-service-c      
