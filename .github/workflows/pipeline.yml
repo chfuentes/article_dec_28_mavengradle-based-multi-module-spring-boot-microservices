@@ -67,9 +67,9 @@ jobs:
           echo ${GITHUB_WORKSPACE}
 
       - name: Run JMeter Tests
-        uses: QAInsights/PerfAction@v2.0
+        uses: QAInsights/PerfAction@2.0
         with:
-         test-plan-path: ./jmeter/test.jmx
+         test-plan-path: /jmeter/test.jmx
          args: ""
           
      # - name: Upload Results
