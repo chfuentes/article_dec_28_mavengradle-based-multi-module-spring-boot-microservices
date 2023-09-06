@@ -67,7 +67,7 @@ jobs:
           echo ${GITHUB_WORKSPACE}
 
       - name: Run JMeter Tests
-        uses: QAInsights/PerfAction@2.0
+        uses: QAInsights/PerfAction@3.0
         with:
          test-plan-path: /jmeter/test.jmx
          args: ""
