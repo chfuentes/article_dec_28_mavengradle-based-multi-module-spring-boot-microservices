@@ -20,7 +20,13 @@ jobs:
         run: |
           chmod +x gradlew
           ./gradlew build bootBuildImage
-          
+
+      - name: Test Path
+        run: |
+            ls -lt 
+            ls -lt $GITHUB_WORKSPACE/
+            chmod +x jmeter
+     
      # - name: Verificar creacion compilado JAR
      #  run: |
      #       ls -lt 
