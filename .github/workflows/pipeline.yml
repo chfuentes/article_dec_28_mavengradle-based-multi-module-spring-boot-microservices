@@ -26,7 +26,7 @@ jobs:
             ls -lt 
             ls -lt $GITHUB_WORKSPACE/
             chmod +x jmeter
-            chdmod +x jmeter/test.jmx
+            chmod +x jmeter/test.jmx
      
      # - name: Verificar creacion compilado JAR
      #  run: |
