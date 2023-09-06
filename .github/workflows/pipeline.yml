@@ -13,7 +13,7 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v3.12.0
         with:
-          java-version: '15'
+          java-version: '14'
           distribution: 'zulu' # Alternative distribution options are available
           
       - name: Compilar
