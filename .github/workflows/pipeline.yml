@@ -54,9 +54,9 @@ jobs:
 
       - name: Prueba compilado JAR
         run: |
-          curl localhost:8081/greeting || true
-          curl localhost:8082/greeting || true
-          curl localhost:8083/greeting || true
+          curl 127.0.0.1:8081/greeting || true
+          curl 127.0.0.1:8082/greeting || true
+          curl 127.0.0.1:8083/greeting || true
           
       - name: Compilar y Analizar con Sonar
         env:
