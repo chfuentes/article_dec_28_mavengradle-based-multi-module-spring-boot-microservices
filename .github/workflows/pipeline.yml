@@ -57,6 +57,18 @@ jobs:
           curl 127.0.0.1:8081/greeting || true
           curl 127.0.0.1:8082/greeting || true
           curl 127.0.0.1:8083/greeting || true
+
+      - name: Run JMeter Tests
+        uses: QAInsights/PerfAction@v3.1
+        with:
+          test-plan-path: jmeter/test.jmx
+          args: ""
+          
+      - name: Upload Results
+        uses: actions/upload-artifact@v2
+        with:
+          name: jmeter
+          path: resultado.jtl
           
       - name: Compilar y Analizar con Sonar
         env:
