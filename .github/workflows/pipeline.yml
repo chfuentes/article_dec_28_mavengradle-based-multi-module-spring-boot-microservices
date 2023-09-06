@@ -25,8 +25,6 @@ jobs:
         run: |
             ls -lt 
             ls -lt $GITHUB_WORKSPACE/
-            chmod +x jmeter
-            chmod +x jmeter/test.jmx
      
      # - name: Verificar creacion compilado JAR
      #  run: |
@@ -41,14 +39,13 @@ jobs:
           java -jar $GITHUB_WORKSPACE/service-a/build/libs/service-a-0.0.1-SNAPSHOT.jar &
           java -jar $GITHUB_WORKSPACE/service-b/build/libs/service-b-0.0.1-SNAPSHOT.jar &
           java -jar $GITHUB_WORKSPACE/service-c/build/libs/service-c-0.0.1-SNAPSHOT.jar &
-      
+
+      # Dormir +5 para asegurar que levanten los servers
       - name: Wait / Sleep
-        # You may pin to the exact commit or the version.
-        # uses: jakejarvis/wait-action@919fc193e07906705e5b7a50f90ea9e74d20b2b0
         uses: jakejarvis/wait-action@v0.1.1
         with:
-          # Follows the Linux sleep syntax for time units: a number followed by s for seconds, m for minutes, etc
           time: 8s
+
       #- name: Verificar creacion compilado Docker
         #run: #docker images 
         
@@ -71,20 +68,9 @@ jobs:
           curl 127.0.0.1:8081/greeting || true
           curl 127.0.0.1:8082/greeting || true
           curl 127.0.0.1:8083/greeting || true
-          echo ${GITHUB_WORKSPACE}
 
-      # Steps represent a sequence of tasks that will be executed as part of the job
-
-      - name: where are the files?
-        run: |
-           pwd
-           ls
-      - name: create test_report
-        run: |
-           mkdir $GITHUB_WORKSPACE/test_report
-
-      # Runs a set of commands using the runners shell
-      - name: install jmeter
+      # Jmeter
+      - name: instalar jmeter
         run: |
           java -version
           wget https://downloads.apache.org//jmeter/binaries/apache-jmeter-5.5.zip
@@ -92,14 +78,15 @@ jobs:
           cd apache-jmeter-5.5/bin
           ./jmeter -v
           pwd
+          chmod +x $GITHUB_WORKSPACE/test_report
 
-      - name: install plugins
+      - name: instalar plugins
         run: |
           cd $GITHUB_WORKSPACE/apache-jmeter-5.5
           wget -q --no-check-certificate https://jmeter-plugins.org/files/packages/jpgc-dummy-0.4.zip  -P .
           unzip -o jpgc-dummy-0.4.zip  && rm jpgc-dummy-0.4.zip
 
-      - name: run jmx scripts
+      - name: Ejecutar scripts jmx 
         run: |
          cd $GITHUB_WORKSPACE
          for i in $( ls -A1 *.jmx); do
@@ -108,22 +95,17 @@ jobs:
             ./jmeter -n -t $GITHUB_WORKSPACE/$i  -l $GITHUB_WORKSPACE/${i%.jmx}.jtl -e -o $GITHUB_WORKSPACE/test_report/${i%.jmx}
          done
          
-      - name: move jtl files to test_report
+      - name: mover jtl
         run: |
-          chmod +x $GITHUB_WORKSPACE/test_report
+          ls
           mv *.jtl $GITHUB_WORKSPACE/test_report
-         
+
+      # Dejar disponible resultados al finalizar
       - name: Upload JMeter Test Results
         uses: actions/upload-artifact@v2.2.4
         with:
          name: test_results
          path: test_report
-          
-     # - name: Upload Results
-     #   uses: actions/upload-artifact@v2
-     #   with:
-     #     name: jmeter-results
-     #     path: result.jtl
           
      # - name: Compilar y Analizar con Sonar
      #   env:
