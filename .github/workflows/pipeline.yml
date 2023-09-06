@@ -21,7 +21,7 @@ jobs:
           chmod +x gradlew
           ./gradlew build bootBuildImage
           
-      - name: Verificar compilado
+      - name: Verificar creacion compilado JAR
         run: |
             ls -lt 
             ls -lt $GITHUB_WORKSPACE/build
@@ -35,7 +35,7 @@ jobs:
           java -jar $GITHUB_WORKSPACE/service-a/build/libs/service-b-0.0.1-SNAPSHOT.jar &
           java -jar $GITHUB_WORKSPACE/service-a/build/libs/service-c-0.0.1-SNAPSHOT.jar &
       
-      - name: Verificar compilado
+      - name: Verificar creacion compilado Docker
         run: docker images 
         
       - name: Cache SonarCloud packages
@@ -54,9 +54,9 @@ jobs:
 
       - name: Prueba compilado JAR
         run: |
-          curl http://localhost:8081/greeting || true
-          curl http://localhost:8082/greeting || true
-          curl http://localhost:8083/greeting || true
+          curl localhost:8081/greeting || true
+          curl localhost:8082/greeting || true
+          curl localhost:8083/greeting || true
           
       - name: Compilar y Analizar con Sonar
         env:
