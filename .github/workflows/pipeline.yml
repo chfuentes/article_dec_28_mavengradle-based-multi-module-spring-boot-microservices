@@ -13,7 +13,7 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v3.12.0
         with:
-          java-version: '11'
+          java-version: '20'
           distribution: 'zulu' # Alternative distribution options are available
           
       - name: Compilar
@@ -59,16 +59,16 @@ jobs:
           curl 127.0.0.1:8083/greeting || true
 
       - name: Run JMeter Tests
-        uses: QAInsights/PerfAction@v3.1
+        uses: rbhadti94/apache-jmeter-action@v0.7.0
         with:
-          test-plan-path: ./jmeter/test.jmx
-          args: ""
+          testFilePath: /jmeter/test.jmx
+          outputReportsFolder: /jmeter/
           
-      - name: Upload Results
-        uses: actions/upload-artifact@v2
-        with:
-          name: jmeter-results
-          path: result.jtl
+     # - name: Upload Results
+     #   uses: actions/upload-artifact@v2
+     #   with:
+     #     name: jmeter-results
+     #     path: result.jtl
           
      # - name: Compilar y Analizar con Sonar
      #   env:
