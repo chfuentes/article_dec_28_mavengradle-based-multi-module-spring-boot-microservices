@@ -67,10 +67,10 @@ jobs:
           echo ${GITHUB_WORKSPACE}
 
       - name: Run JMeter Tests
-        uses: rbhadti94/apache-jmeter-action@v0.7.0
+        uses: QAInsights/PerfAction@v3.1
         with:
-          testFilePath: jmeter/test.jmx
-          outputReportsFolder: jmeter/
+         test-plan-path: ./jmeter/test.jmx
+         args: ""
           
      # - name: Upload Results
      #   uses: actions/upload-artifact@v2
