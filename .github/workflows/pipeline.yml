@@ -40,12 +40,6 @@ jobs:
           java -jar $GITHUB_WORKSPACE/service-a/build/libs/service-a-0.0.1-SNAPSHOT.jar &
           java -jar $GITHUB_WORKSPACE/service-b/build/libs/service-b-0.0.1-SNAPSHOT.jar &
           java -jar $GITHUB_WORKSPACE/service-c/build/libs/service-c-0.0.1-SNAPSHOT.jar &
-
-      # Dejar artifact con JARS 
-      - uses: actions/upload-artifact@v1
-        with:
-          name: jars
-          path: /service-a/build/libs
           
       # Dormir +5 para asegurar que levanten los servers
       - name: Wait / Sleep
