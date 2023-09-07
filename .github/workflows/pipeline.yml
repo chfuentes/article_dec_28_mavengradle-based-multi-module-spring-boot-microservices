@@ -74,14 +74,25 @@ jobs:
         uses: rbhadti94/apache-jmeter-action@v0.7.0
         with:
           testFilePath: 'jmetertest.jmx'
-          outputReportsFolder: 'test_report/'
+          outputReportsFolder: 'jmreport'
+      
+      - uses: actions/upload-artifact@v1
+        with:
+          name: jmeter-test-results
+          path: jmreport/
 
       # Pruebas con postman
       - name: Postman
         uses: matt-ball/newman-action@master
         with:
           collection: 'Postman.json'
-          export-globals: 'test_report/results.json'
+          #export-globals: 'test_report/results.json'
+          reporter: 'json'
+
+      - uses: actions/upload-artifact@v1
+        with:
+          name: postman-test-results
+          path: newman/
           
      # - name: Compilar y Analizar con Sonar
      #   env:
