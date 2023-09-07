@@ -70,24 +70,7 @@ jobs:
       #    curl 127.0.0.1:8082/greeting || true
       #    curl 127.0.0.1:8083/greeting || true
 
-      # Pruebas con Jmeter
-      - name: Apache JMeter
-        uses: rbhadti94/apache-jmeter-action@v0.7.0
-        with:
-          testFilePath: 'jmetertest.jmx'
-          outputReportsFolder: 'jmreport'
-
-      - name: PerfAction for JMeter
-        # You may pin to the exact commit or the version.
-        # uses: QAInsights/PerfAction@f3959d0a69e7f23949add25d7e34a3ae167d6443
-        uses: QAInsights/PerfAction@v3.1
-        with:
-          # jmeter test plan to execute
-          test-plan-path: 'jmetertest.jmx'
-          # Optional arguments. For more details https://jmeter.apache.org/usermanual/get-started.html#non_gui
-          #args: # optional
-
-    # Jmeter
+      # Jmeter
       - name: instalar jmeter
         run: |
           java -version
@@ -110,11 +93,13 @@ jobs:
             mkdir $GITHUB_WORKSPACE/test_report/${i%.jmx}
             ./jmeter -n -t $GITHUB_WORKSPACE/$i  -l $GITHUB_WORKSPACE/${i%.jmx}.jtl -e -o $GITHUB_WORKSPACE/test_report/${i%.jmx}
          done
-         
+      
+      #
       - name: mover jtl
         run: |
           ls
           mv *.jtl $GITHUB_WORKSPACE/test_report
+          
       # Dejar disponible resultados al finalizar
       - name: Upload JMeter Test Results
         uses: actions/upload-artifact@v2.2.4
