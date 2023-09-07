@@ -45,7 +45,7 @@ jobs:
       - uses: actions/upload-artifact@v1
         with:
           name: jars
-          path: $GITHUB_WORKSPACE/service-b/build/libs/
+          path: /service-a/build/libs
           
       # Dormir +5 para asegurar que levanten los servers
       - name: Wait / Sleep
