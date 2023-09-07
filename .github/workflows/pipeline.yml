@@ -87,7 +87,7 @@ jobs:
         with:
           collection: 'Postman.json'
           #export-globals: 'test_report/results.json'
-          reporter: 'json'
+          reporters: 'json'
 
       - uses: actions/upload-artifact@v1
         with:
