@@ -73,6 +73,8 @@ jobs:
       # Jmeter
       - name: instalar jmeter
         run: |
+          mkdir $GITHUB_WORKSPACE/test_report
+          chmod +x $GITHUB_WORKSPACE/test_report
           java -version
           wget https://downloads.apache.org//jmeter/binaries/apache-jmeter-5.5.zip
           unzip apache-jmeter-5.5.zip
@@ -99,8 +101,6 @@ jobs:
       - name: mover jtl
         run: |
           ls
-          mkdir $GITHUB_WORKSPACE/test_report
-          chmod +x $GITHUB_WORKSPACE/test_report
           mv *.jtl $GITHUB_WORKSPACE/test_report
           
       # Dejar disponible resultados al finalizar
